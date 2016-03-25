@@ -1,0 +1,29 @@
+.container{
+  width: 450px;
+  height: 350px;
+  background: silver;
+  position: relative;
+  margin: auto;
+}
+
+.flying{
+  width: 100px;
+  height: 10px;
+  background: red;
+  bottom: 25px;
+  margin: auto;
+  position: absolute;
+  left: 0;
+  transition: left .1s ease;
+}
+
+.troopers{
+  width: 20px;
+  height: 20px;
+  background: url('trooper.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
