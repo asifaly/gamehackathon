@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+	xmlns:svg="http://www.w3.org/2000/svg"
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	version="1.0"
+	width="450" height="600">
+	<title>Bulgarian Orthodox Cross</title>
+	<path style="fill:black;stroke:none"
+		d="M 190,35 A 35,35 0 0 1 260,35 A 35,35 0 0 1 260,105 V 190 H 345 A 35,35 0 0 1 415,190 A 35,35 0 0 1 415,260 A 35,35 0 0 1 345,260 H 260 V 495 A 35,35 0 0 1 260,565 A 35,35 0 0 1 190,565 A 35,35 0 0 1 190,495 V 260 H 105 A 35,35 0 0 1 35,260 A 35,35 0 0 1 35,190 A 35,35 0 0 1 105,190 H 190 V 105 A 35,35 0 0 1 190,35 z M 214,35 v 24 h -24 v 22 h 24 v 133 h -133 v -24 h -22 v 24 h -24 v 22 h 24 v 24 h 22 v -24 h 133 v 283 h -24 v 22 h 24 v 24 h 22 v -24 h 24 v -22 h -24 v -283 h 133 v 24 h 22 v -24 h 24 v -22 h -24 v -24 h -22 v 24 h -133 v -133 h 24 v -22 h -24 v -24 z" />
+</svg>

@@ -1,94 +1,100 @@
 //Math.floor(Math.random() * 430) + 10 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
-    var trooperId = 0;
-    var troopers = {};
-    var game = {
+  var trooperId = 0;
+  var troopers = {};
+  var game = {
 
-        init: function(){
-          this.podPosition = 0;
-          this.podIncrement = 10;
-          this.trooperCreateSpeed = 1000;
-          this.trooperFallSpeed = 10;
-          this.trooperInit();
-        },
+    init: function () {
+      this.podPosition = 0;
+      this.podSpeed = 50;
+      this.trooperCreateSpeed = 3000;
+      this.trooperFallSpeed = 20;
+      this.trooperInit();
+    },
 
-        podRight: function() {
-            var pos = parseInt($("#pod").css('left'));
-            this.podPosition = pos + 10;
-            $("#pod").css('left', this.podPosition + 'px');
-        },
-        podLeft: function() {
-            var pos = parseInt($("#pod").css('left'));
-            this.podPosition = pos - 10;
-            $("#pod").css('left', this.podPosition + 'px');
-        },
-        trooperInit: function() {
+    podRight: function () {
+      var pos = parseInt($("#pod").css('left'));
+      this.podPosition = pos + this.podSpeed;
+      $("#pod").css('left', this.podPosition + 'px');
+    },
+    podLeft: function () {
+      var pos = parseInt($("#pod").css('left'));
+      this.podPosition = pos - this.podSpeed;
+      $("#pod").css('left', this.podPosition + 'px');
+    },
+    trooperInit: function () {
 
-            this.trooperInitInterval = setInterval(createTrooper, this.trooperCreateSpeed);
+      this.trooperInitInterval = setInterval(createTrooper, this.trooperCreateSpeed);
 
-            function createTrooper() {
-                trooperId++;
-                var trooperPos = Math.floor(Math.random() * 420) + 10;
-                var newTrooper = '<div class="troopers" id=' + trooperId + '></div>';
-                troopers[trooperId] = trooperPos;
-                $(".container").append(newTrooper);
-                $("#" + trooperId).css('left', trooperPos + 'px');
-                game.trooperFall(trooperId);
-            }
-        },
+      function createTrooper() {
+        trooperId++;
+        var trooperPos = Math.floor(Math.random() * 420) + 10;
+        var newTrooper = '<div class="troopers" id=' + trooperId + '></div>';
+        troopers["#"+trooperId] = trooperPos;
+        $(".container").append(newTrooper);
+        $("#" + trooperId).css('left', trooperPos + 'px');
+        game.trooperFall("#"+trooperId);
+      }
+    },
 
-        trooperFall: function(trooper) {
-            var _this = this;
-            var trooperFallInterval = setInterval(fall, this.trooperFallSpeed);
-            var top = parseInt($("#" + trooper).css('top'));
+    trooperFall: function (trooper) {
+      var _this = this;
+      var trooperFallInterval = setInterval(fall, this.trooperFallSpeed);
+      var top = parseInt($(trooper).css('top'));
 
-            function fall() {
-                top++;
+      function fall() {
+        top++;
 
-                if (top === 295 && troopers[trooper] >= _this.podPosition && troopers[trooper] <= _this.podPosition + 75 - 20) {
-                    console.log("collission");
-                    console.log(trooper);
-                    console.log(trooperFallInterval);
-                    clearInterval(trooperFallInterval);
+        if (top === 285 && troopers[trooper] + 10 >= _this.podPosition && troopers[trooper] <= _this.podPosition + 85 - 30) {
+          clearInterval(trooperFallInterval);
+          // $(trooper).addClass("alive");
+          setTimeout(function () {
+            $(trooper).remove();
+          }, 1000);
 
-                } else if (top < 330) {
 
-                    $("#" + trooper).css('top', top + 'px');
+        } else if (top < 320) {
 
-                } else {
+          $(trooper).css('top', top + 'px');
 
-                    clearInterval(trooperFallInterval);
-                    $("#" + trooper).hide("slow");
-                }
-            }
+        } else {
 
-        },
-
-        checkCollission: function() {
-
+          clearInterval(trooperFallInterval);
+          trooper % 2 === 0 ? $(trooper).addClass("dead1") : $(trooper).addClass("dead2");
+          setTimeout(function () {
+            $(trooper).remove();
+          }, 1000);
         }
 
+      }
 
-    };
+    },
 
-    $(document).keydown(function(e) {
-        switch (e.which) {
-            case 37: // left
-                game.podLeft();
-                break;
+    checkCollission: function () {
 
-            case 39: // right
-                game.podRight();
-                break;
+    },
 
-            default:
-                return; // exit this handler for other keys
-        }
-        e.preventDefault();
-    });
 
-    game.init();
+  };
+
+  $(document).keydown(function (e) {
+    switch (e.which) {
+    case 37: // left
+      game.podLeft();
+      break;
+
+    case 39: // right
+      game.podRight();
+      break;
+
+    default:
+      return; // exit this handler for other keys
+    }
+    e.preventDefault();
+  });
+
+  game.init();
 
 });

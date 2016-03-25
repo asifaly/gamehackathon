@@ -1,29 +1,47 @@
-.container{
+.container {
   width: 450px;
   height: 350px;
-  background: silver;
+  background: url('background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
   position: relative;
   margin: auto;
+    box-shadow: 5px 5px 2px #888888;
 }
 
-.flying{
+.flying {
   width: 75px;
   height: 10px;
   background: red;
-  bottom: 25px;
+  bottom: 30px;
   margin: auto;
   position: absolute;
   left: 0;
-  transition: left .1s ease;
+  transition: left .5s ease;
+  box-shadow: 5px 5px 2px #888888;
 }
 
-.troopers{
-  width: 20px;
-  height: 20px;
-  background: url('trooper.svg');
+.troopers {
+  width: 30px;
+  height: 30px;
+  background-image: url('troopercolor.svg');
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.dead1 {
+  background-image: url('cross.svg');
+  /*transform: rotate(-90deg);*/
+}
+
+.dead2 {
+  background-image: url('cross.svg');
+  /*transform: rotate(90deg);*/
+}
+
+.alive{
+  background-image: url('troopercoloralive.svg');
 }
