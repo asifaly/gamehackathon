@@ -47,7 +47,7 @@ $(document).ready(function () {
       function fall() {
         top++;
 
-        if (top === 285 && troopers[trooper] + 10 >= _this.podPosition && troopers[trooper] <= _this.podPosition + 85 - 30) {
+        if (top === 285 && troopers[trooper] + 10 >= _this.podPosition && troopers[trooper] <= _this.podPosition + 105 - 30) {
           clearInterval(trooperFallInterval);
           // $(trooper).addClass("alive");
           setTimeout(function () {

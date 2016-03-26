@@ -10,15 +10,17 @@
 }
 
 .flying {
-  width: 75px;
-  height: 10px;
-  background: red;
+  width: 100px;
+  height: 30px;
+  background: url('carrier.svg');
+    background-size: contain;
+  background-repeat: no-repeat;
   bottom: 30px;
   margin: auto;
   position: absolute;
   left: 0;
   transition: left .5s ease;
-  box-shadow: 5px 5px 2px #888888;
+/*  box-shadow: 5px 5px 2px #888888;*/
 }
 
 .troopers {
