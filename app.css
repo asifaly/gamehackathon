@@ -13,6 +13,13 @@ body{
   box-shadow: 5px 5px 2px #888888;
 }
 
+.button-container {
+  width: 700px;
+  height: 450px;
+  position: relative;
+  margin: auto;
+}
+
 #score{
   position: absolute;
   right: 10px;
@@ -44,7 +51,7 @@ body{
   position: absolute;
   top: 0;
   left: 0;
-/*  transition: top 0.5s ease;*/
+  transition: top 0.2s ease;
 }
 
 .trooper:after {

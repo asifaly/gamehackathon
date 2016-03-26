@@ -1,7 +1,26 @@
 //Math.floor(Math.random() * 430) + 10 
 //begin game
 $(document).ready(function () {
-  game.init();
+  $("#start").click(function () {
+    game.init();
+    //check for keypress
+    $(document).keydown(function (e) {
+      switch (e.which) {
+      case 37: // left
+        pod.moveLeft();
+        break;
+      case 39: // right
+        pod.moveRight();
+        break;
+      default:
+        return; // exit this handler for other keys
+      }
+      e.preventDefault();
+    });
+  });
+  $("#stop").click(function () {
+    game.stopGame();
+  });
 });
 //define the pod object
 var pod = {
@@ -11,7 +30,7 @@ var pod = {
     this.podSpeed = 50;
     this.pod = $("#pod");
     this.podWidth = parseInt(this.pod.css('width'));
-    this.podBorder= parseInt(this.pod.css('border-right'));
+    this.podBorder = parseInt(this.pod.css('border-right'));
   },
   //move pod to the right
   moveRight: function () {
@@ -26,16 +45,17 @@ var pod = {
     this.updatePodPosition();
   },
   //return current podposition i.e left of the pod
-  getPosition: function () {
+  getPodPosition: function () {
     return this.podPosition;
   },
+  //set the width of the pod, to be called when there is collission with powerups and danger
   setPodWidth: function (multiplier) {
     this.podWidth = this.podWidth * multiplier;
     this.pod.css('width', this.podWidth + 'px');
   },
-
-  updatePodPosition: function(){
-    this.podPosition = (this.podPosition<0 ? 0 : (this.podPosition+this.podWidth>700 ? 700-this.podWidth-this.podBorder : this.podPosition));
+  //called on keypress to control the pod from moving out of the border.
+  updatePodPosition: function () {
+    this.podPosition = (this.podPosition < -10 ? -10 : (this.podPosition + this.podWidth > 700 ? 700 - this.podWidth - this.podBorder : this.podPosition));
     this.pod.css('left', this.podPosition + 'px');
   }
 };
@@ -46,12 +66,12 @@ var FallingObject = function (x) {
   this.id = Date.now() + Math.floor(Math.random() * 10000) + 1000;
   this.html = '<div class="' + this.type + '" id=' + this.id + '></div>';
   this.fallSpeed = Math.floor(Math.random() * 100) + 20;
-  this.pos = Math.floor(Math.random() * 660)+10;
+  this.pos = Math.floor(Math.random() * 660) + 10;
   this.points = 120 - this.fallSpeed;
-  console.log(this);
+  // console.log(this);
   $(".container").append(this.html);
   $("#" + this.id).css('left', this.pos + 'px');
-  $("#"+this.id).attr('data-content', this.points);
+  $("#" + this.id).attr('data-content', this.points);
 };
 //game object to control the game play
 var game = {
@@ -64,7 +84,7 @@ var game = {
     this.powerUpInit();
     this.dangerInit();
     this.scoreDiv = $("#points");
-    this.score= 0;
+    this.score = 0;
     pod.init();
   },
   //create troopers
@@ -76,6 +96,7 @@ var game = {
       game.startFall(trooper);
     }
   },
+  //create powerup items
   powerUpInit: function () {
     this.powerInitInterval = setInterval(createPower, this.powerCreateSpeed);
 
@@ -84,6 +105,7 @@ var game = {
       game.startFall(power);
     }
   },
+  //create danger items
   dangerInit: function () {
     this.dangerInitInterval = setInterval(createDanger, this.dangerCreateSpeed);
 
@@ -99,70 +121,64 @@ var game = {
     var top = parseInt($("#" + elem.id).css('top'));
 
     function fall() {
-      top+=2;
-      if (top >= 365 && top <= 370 && elem.pos + 10 >= pod.getPosition() && elem.pos <= pod.getPosition() + pod.podWidth) {
+      top += 2;
+      if (top >= 365 && top <= 370 && elem.pos + 10 >= pod.getPodPosition() && elem.pos <= pod.getPodPosition() + pod.podWidth) {
         clearInterval(elem.FallInterval);
-
-        if (elem.type === "trooper") {
-          $("#" + elem.id).addClass("alive");
-          _this.updateScore(elem);
-        }
-        if (elem.type === "powerup") {
-          pod.setPodWidth(1.3);
-        }
-        if (elem.type === "danger") {
-          pod.setPodWidth(0.7);
-        }
-        _this.removeObject(elem);
+        _this.handleCollission(elem);
       } else if (top < 410) {
         $("#" + elem.id).css('top', top + 'px');
       } else {
-        clearInterval(elem.FallInterval);
-        $("#" + elem.id).hasClass('trooper') ? $("#" + elem.id).addClass("dead") : "";
-        _this.updateScore(elem, true);
-        _this.removeObject(elem);
+        _this.handleDead(elem);
       }
     }
   },
   //need to sepearte the collission function
-  checkCollission: function (top,elem) {
-    if (top === 365 && elem.pos + 10 >= pod.getPosition() && elem.pos <= pod.getPosition() + pod.podWidth) {
-      clearInterval(elem.FallInterval);
-      if (elem.type === "powerup") {
-        pod.setPodWidth(1.3);
-      }
-      if (elem.type === "danger") {
-        pod.setPodWidth(0.7);
-      }
-      _this.removeObject(elem);
+  handleCollission: function (e) {
+    clearInterval(e.FallInterval);
+    if (e.type === "trooper") {
+      $("#" + e.id).addClass("alive");
+      this.updateScore(e);
     }
+    if (e.type === "powerup") {
+      pod.setPodWidth(1.3);
+    }
+    if (e.type === "danger") {
+      pod.setPodWidth(0.7);
+    }
+    this.removeObject(e);
   },
-  removeObject: function (elem) {
+  handleDead: function (e) {
+    clearInterval(e.FallInterval);
+    $("#" + e.id).hasClass('trooper') ? $("#" + e.id).addClass("dead") : "";
+    this.updateScore(e, true);
+    this.removeObject(e);
+  },
+  removeObject: function (e) {
     setTimeout(function () {
-      $("#" + elem.id).remove();
-      delete elem;
+      $("#" + e.id).remove();
+      delete e;
     }, 1000);
   },
-  updateScore: function(elem, dead){
-
-    var score = (dead ? Math.floor(elem.points/4) : elem.points);
-    this.score = (dead ? this.score -= score : this.score+=score);
-    var plusminus  = (dead ? "-" : "+");
-    $('#'+elem.id).html(plusminus+score);
+  updateScore: function (e, dead) {
+    var score = (dead ? Math.floor(e.points / 4) : e.points);
+    this.score = (dead ? this.score -= score : this.score += score);
+    var plusminus = (dead ? "-" : "+");
+    $('#' + e.id).html(plusminus + score);
     (this.scoreDiv).html(this.score);
+  },
+  stopGame: function () {
+    clearInterval(this.trooperInitInterval);
+    clearInterval(this.powerInitInterval);
+    clearInterval(this.dangerInitInterval);
+    $('.trooper').each(function () {
+      $(this).remove();
+    });
+    $('.powerup').each(function () {
+      $(this).remove();
+    });
+    $('.danger').each(function () {
+      $(this).remove();
+    });
+    $('#score').hide();
   }
 };
-//check for keypress
-$(document).keydown(function (e) {
-  switch (e.which) {
-  case 37: // left
-    pod.moveLeft();
-    break;
-  case 39: // right
-    pod.moveRight();
-    break;
-  default:
-    return; // exit this handler for other keys
-  }
-  e.preventDefault();
-});
