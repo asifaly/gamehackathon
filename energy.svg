@@ -1,0 +1,37 @@
+<!--?xml version="1.0" standalone="no"?--><svg xmlns="http://www.w3.org/2000/svg" width="300.000000pt" height="300.000000pt" viewBox="0 0 300.000000 300.000000" preserveAspectRatio="xMidYMid meet">
+<metadata>
+  <rdf:rdf xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <rdf:description dc:title="energy recycle" dc:publisher="Hiox" dc:date="2015-04-04" dc:format="image/svg+xml" dc:language="en">
+      <dc:creator>
+        <rdf:bag>
+          <rdf:li>svgimages.com</rdf:li>
+        </rdf:bag>
+      </dc:creator>
+    </rdf:description>
+  </rdf:rdf>
+</metadata>
+<g transform="translate(0.000000,300.000000) scale(0.100000,-0.100000)" fill="#5C7B0B" stroke="none">
+<path style="position: relative; fill: rgb(19, 11, 123);" class="node" id="node1" d="M1463 2468 c-14 -19 -202 -408 -387 -803 -26 -55 -56 -118 -67 -140
+l-19 -40 216 -3 215 -2 -7 -23 c-4 -12 -29 -69 -57 -127 -68 -144 -138 -293
+-172 -365 -15 -33 -47 -100 -70 -150 -24 -49 -60 -126 -80 -170 -21 -44 -40
+-84 -42 -88 -26 -45 115 104 448 473 18 19 87 94 153 165 67 72 164 177 216
+235 52 57 135 146 183 198 48 52 86 97 83 99 -2 2 -112 4 -244 3 -132 0 -243
+3 -245 8 -5 7 34 100 128 307 12 28 48 109 80 180 31 72 68 153 81 182 13 28
+24 57 24 62 0 17 -425 15 -437 -1z" fill="#130b7b"></path>
+<path style="position: relative; fill: rgb(17, 17, 242);" class="node" id="node2" d="M1115 2366 l15 -34 -58 -33 c-228 -128 -397 -368 -431 -614 -39 -280
+38 -543 216 -736 55 -59 153 -139 170 -139 14 0 47 80 37 88 -5 5 -35 30 -67
+57 -95 79 -159 172 -228 330 -19 44 -39 171 -39 250 0 80 22 230 40 264 4 9
+23 48 41 86 19 39 39 77 46 85 43 55 104 122 139 153 39 35 150 107 165 107 4
+0 12 -13 18 -30 5 -16 14 -30 19 -30 5 0 25 20 43 45 19 25 44 58 57 73 35 41
+55 72 50 77 -6 6 -194 35 -225 35 -21 0 -21 -1 -8 -34z" fill="#1111f2"></path>
+<path style="position: relative; fill: rgb(14, 78, 240);" class="node" id="node3" d="M1906 2249 c-9 -23 -16 -42 -14 -44 2 -1 24 -16 49 -33 111 -75 232
+-229 278 -352 67 -182 67 -392 -2 -566 -47 -119 -153 -258 -252 -330 -22 -16
+-42 -31 -45 -34 -3 -3 -39 -22 -80 -43 -85 -41 -161 -63 -267 -75 l-73 -8 0
+38 c0 21 -5 38 -10 38 -12 0 -189 -87 -208 -103 -9 -7 13 -27 90 -78 l103 -69
+6 31 c4 16 9 32 11 34 2 3 55 12 117 20 498 70 823 506 751 1008 -32 221 -180
+452 -368 577 -25 16 -51 30 -58 30 -6 0 -19 -19 -28 -41z" fill="#0e4ef0"></path>
+</g>
+<g transform="translate(0.000000,300.000000) scale(0.100000,-0.100000)" fill="#FFFFFF" stroke="none">
+
+</g>
+</svg>

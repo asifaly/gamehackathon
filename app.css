@@ -1,69 +1,121 @@
+body{
+  font-family: sans-serif;
+}
+
 .container {
-  width: 450px;
-  height: 350px;
+  width: 700px;
+  height: 450px;
   background: url('background.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
   margin: auto;
-    box-shadow: 5px 5px 2px #888888;
+  box-shadow: 5px 5px 2px #888888;
+}
+
+#score{
+  position: absolute;
+  right: 10px;
+  color: black;
+  font-weight: bold;
+  font-size: 1.5em;
 }
 
 .flying {
-  width: 100px;
-  height: 30px;
-  background: url('carrier.svg');
-    background-size: contain;
-  background-repeat: no-repeat;
-  bottom: 30px;
+  width: 80px;
+  border-bottom: 10px solid black;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  height: 0;
+  bottom: 40px;
   margin: auto;
   position: absolute;
   left: 0;
-  transition: left .5s ease;
-/*  box-shadow: 5px 5px 2px #888888;*/
+  transition: left .5s ease, width .5s ease;
+  box-shadow: 0px 5px 0px 0px #888888;
 }
 
 .trooper {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   background-image: url('troopercolor.svg');
   background-size: cover;
   background-repeat: no-repeat;
   position: absolute;
   top: 0;
   left: 0;
+/*  transition: top 0.5s ease;*/
 }
 
-.powerup{
-  width: 30px;
-  height: 30px;
-  background: blue;
+.trooper:after {
+    content: attr(data-content);
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.5em;
+}
+
+.powerup {
+  width: 40px;
+  height: 40px;
+  background-image: url('energy.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 50%;
+  transition: top 0.1s ease;
 }
 
-.danger{
-  width: 30px;
-  height: 30px;
-  background: red;
+.powerup:after {
+    content: "Power";
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    color: black;
+/*    font-weight: bold;*/
+    text-align: center;
+    font-size: 0.5em;
+}
+
+.danger {
+  width: 40px;
+  height: 40px;
+  background: url('danger.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 50%;
+  transition: top 0.5s ease;
 }
 
-.dead1 {
-  background-image: url('cross.svg');
-  /*transform: rotate(-90deg);*/
+.danger:after {
+    content: "Danger";
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    color: black;
+/*    font-weight: bold;*/
+    text-align: left;
+    font-size: 0.5em;
 }
 
-.dead2 {
-  background-image: url('cross.svg');
-  /*transform: rotate(90deg);*/
+.dead{
+  background-image: none;
 }
 
-.alive{
-  background-image: url('troopercoloralive.svg');
+.dead:after{
+  content: "";
+}
+
+.alive {
+  background-image: none;
+}
+
+.alive:after {
+  content: "";
 }
