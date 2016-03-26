@@ -23,7 +23,7 @@
 /*  box-shadow: 5px 5px 2px #888888;*/
 }
 
-.troopers {
+.trooper {
   width: 30px;
   height: 30px;
   background-image: url('troopercolor.svg');
@@ -32,6 +32,26 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.powerup{
+  width: 30px;
+  height: 30px;
+  background: blue;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+}
+
+.danger{
+  width: 30px;
+  height: 30px;
+  background: red;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
 }
 
 .dead1 {
