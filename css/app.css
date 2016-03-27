@@ -125,10 +125,8 @@ body{
 
 .container {
   height: 100vh;
-/*  height: 100vh;*/
   position: relative;
   margin: auto;
-  box-shadow: 5px 5px 2px #888888;
 }
 
 .button-container {
@@ -156,21 +154,24 @@ body{
   bottom: 10vh;
   margin: auto;
   position: absolute;
-  left: 0vw;
+  left: 0;
   transition: left .1s ease, width .5s ease;
-  box-shadow: 0vh 1vh 0vh 0vh #888888;
+  box-shadow: 0 1vh 0 0 #888888;
 }
 
-.trooper {
+.base{
   width: 7vw;
   height: 12vh;
-  background-image: url('troopercolor.svg');
   background-size: contain;
   background-repeat: no-repeat;
   position: absolute;
-  top: 0vh;
-  left: 0vw;
+  top: 0;
+  left: 0;
   transition: top 0.1s ease;
+}
+
+.trooper {
+  background-image: url('../assets/troopercolor.svg');
 }
 
 .trooper::after {
@@ -180,20 +181,11 @@ body{
     left: 0;
     color: black;
     font-weight: bold;
-    text-align: right;
     font-size: 0.5em;
 }
 
 .powerup {
-  width: 7vw;
-  height: 12vh;
-  background-image: url('energy.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: absolute;
-  top: 0vh;
-  left: 0vw;
-  transition: top 0.1s ease;
+  background-image: url('../assets/energy.svg');
 }
 
 .powerup::after {
@@ -202,21 +194,25 @@ body{
     bottom: 0;
     right: 0;
     color: black;
-/*    font-weight: bold;*/
-    text-align: center;
+    font-size: 0.5em;
+}
+
+.super {
+  background-image: url('../assets/super.svg');
+}
+
+.super::after {
+    content: "Super";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: black;
     font-size: 0.5em;
 }
 
 .danger {
-  width: 7vw;
-  height: 12vh;
-  background: url('danger.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: absolute;
-  top: 0vh;
-  left: 0vw;
-  transition: top 0.5s ease;
+  background: url('../assets/danger.svg');
+  background-size: cover;
 }
 
 .danger::after {
@@ -225,8 +221,6 @@ body{
     bottom: 0;
     right: 0;
     color: black;
-/*    font-weight: bold;*/
-    text-align: left;
     font-size: 0.5em;
 }
 

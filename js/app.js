@@ -3,8 +3,6 @@
 $(document).ready(function () {
   var vwConvert = 100 / document.documentElement.clientWidth;
   var vhConvert = 100 / document.documentElement.clientHeight;
-  console.log(vwConvert);
-  console.log(vhConvert);
   //define the pod object
   var pod = {
     //initialize pod speed and position
@@ -42,7 +40,7 @@ $(document).ready(function () {
         this.podPosition = 0;
       }
       if (this.podPosition + this.podWidth > 100) {
-        this.podPosition = 100 - this.podWidth - this.podBorder*2;
+        this.podPosition = 100 - this.podWidth - this.podBorder * 2;
       }
       this.pod.css('left', this.podPosition + 'vw');
     }
@@ -52,7 +50,7 @@ $(document).ready(function () {
     this.type = x;
     //2 objects could be created at the same time so time is not dependable add a random number
     this.id = Date.now() + Math.floor(Math.random() * 10000) + 1000;
-    this.html = '<div class="' + this.type + '" id=' + this.id + '></div>';
+    this.html = '<div class="base ' + this.type + '" id=' + this.id + '></div>';
     this.fallTimer = 10;
     this.fallSpeed = Math.floor(Math.random() * 3) + 1;
     this.pos = Math.floor(Math.random() * 85) + 10;
@@ -68,13 +66,16 @@ $(document).ready(function () {
       this.trooperCreateSpeed = 2000;
       this.powerCreateSpeed = 20000;
       this.dangerCreateSpeed = 15000;
+      this.superCreateSpeed = 40000;
       this.negativePointsFactor = 4;
+      this.superPowerUpFactor = 2;
       this.powerupFactor = 1.3;
       this.dangerFactor = 0.7;
       this.fallSpeedFactor = 2;
       this.trooperInit();
       this.powerUpInit();
       this.dangerInit();
+      this.superPowerInit();
       this.scoreDiv = $("#points");
       this.score = 0;
       pod.init();
@@ -106,6 +107,15 @@ $(document).ready(function () {
         game.startFall(danger);
       }
     },
+    //create superpower items
+    superPowerInit: function () {
+      this.superInitInterval = setInterval(createSuperPower, this.superCreateSpeed);
+
+      function createSuperPower() {
+        superPower = new FallingObject("super");
+        game.startFall(superPower);
+      }
+    },
     //being fall of created items
     startFall: function (elem) {
       var _this = this;
@@ -114,9 +124,7 @@ $(document).ready(function () {
       function fall() {
         var top = Math.floor(parseInt($("#" + elem.id).css('top'))) * vhConvert;
         top += (elem.fallSpeed) / _this.fallSpeedFactor;
-        console.log(top);
-        if (top >= 78 && top <= 80 && elem.pos +7 >= pod.getPodPosition() && elem.pos <= pod.getPodPosition() + pod.podWidth) {
-          console.log("collission detected" + elem.pos + pod.getPodPosition() + top);
+        if (top >= 78 && top <= 80 && elem.pos + 7 >= pod.getPodPosition() && elem.pos <= pod.getPodPosition() + pod.podWidth) {
           clearInterval(elem.FallInterval);
           _this.handleCollission(elem);
         } else if (top < 90) {
@@ -139,11 +147,23 @@ $(document).ready(function () {
       if (e.type === "danger") {
         pod.setPodWidth(this.dangerFactor);
       }
+      if (e.type === "super"){
+        pod.setPodWidth(this.powerupFactor+0.7);
+
+        $('.danger').each(function(){
+          $(this).remove();
+        });
+
+        setTimeout(function(){
+          game.dangerInit();
+          pod.setPodWidth(0.5);
+        },10000);
+      }
       this.removeObject(e);
     },
     handleDead: function (e) {
       clearInterval(e.FallInterval);
-      if ($("#" + e.id).hasClass('trooper')){
+      if ($("#" + e.id).hasClass('trooper')) {
         $("#" + e.id).addClass("dead");
       }
       this.updateScore(e, true);
@@ -161,21 +181,6 @@ $(document).ready(function () {
       var plusminus = (dead ? "-" : "+");
       $('#' + e.id).html(plusminus + score);
       (this.scoreDiv).html(this.score);
-    },
-    stopGame: function () {
-      clearInterval(this.trooperInitInterval);
-      clearInterval(this.powerInitInterval);
-      clearInterval(this.dangerInitInterval);
-      $('.trooper').each(function () {
-        $(this).remove();
-      });
-      $('.powerup').each(function () {
-        $(this).remove();
-      });
-      $('.danger').each(function () {
-        $(this).remove();
-      });
-      $('#score').hide();
     }
   };
   $(document).keydown(function (e) {
@@ -192,11 +197,4 @@ $(document).ready(function () {
     e.preventDefault();
   });
   game.init();
-  $("#start").click(function () {
-    game.init();
-  });
-  //check for keypress
-  $("#stop").click(function () {
-    game.stopGame();
-  });
 });
