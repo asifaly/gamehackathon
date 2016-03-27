@@ -1,3 +1,5 @@
+/*globals $:false */
+
 $(document).ready(function () {
   //jquery reports width/left etc in pixels, this if a factor to convert it to vh and vw
   var vwConvert = 100 / document.documentElement.clientWidth;
@@ -86,7 +88,7 @@ $(document).ready(function () {
       this.trooperInitInterval = setInterval(createTrooper, this.trooperCreateSpeed);
 
       function createTrooper() {
-        trooper = new FallingObject("trooper");
+        var trooper = new FallingObject("trooper");
         game.handleFall(trooper);
       }
     },
@@ -95,7 +97,7 @@ $(document).ready(function () {
       this.powerInitInterval = setInterval(createPower, this.powerCreateSpeed);
 
       function createPower() {
-        power = new FallingObject("powerup");
+        var power = new FallingObject("powerup");
         game.handleFall(power);
       }
     },
@@ -104,7 +106,7 @@ $(document).ready(function () {
       this.dangerInitInterval = setInterval(createDanger, this.dangerCreateSpeed);
 
       function createDanger() {
-        danger = new FallingObject("danger");
+        var danger = new FallingObject("danger");
         game.handleFall(danger);
       }
     },
@@ -113,7 +115,7 @@ $(document).ready(function () {
       this.superInitInterval = setInterval(createSuperPower, this.superCreateSpeed);
 
       function createSuperPower() {
-        superPower = new FallingObject("super");
+        var superPower = new FallingObject("super");
         game.handleFall(superPower);
       }
     },
@@ -121,7 +123,7 @@ $(document).ready(function () {
       this.speedInitInterval = setInterval(createSpeedPower, this.speedCreateSpeed);
 
       function createSpeedPower() {
-        speedPower = new FallingObject("speed");
+        var speedPower = new FallingObject("speed");
         game.handleFall(speedPower);
       }
     },
