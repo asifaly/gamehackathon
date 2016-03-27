@@ -1,6 +1,5 @@
-//Math.floor(Math.random() * 430) + 10 
-//begin game
 $(document).ready(function () {
+  //jquery reports width/left etc in pixels, this if a factor to convert it to vh and vw
   var vwConvert = 100 / document.documentElement.clientWidth;
   var vhConvert = 100 / document.documentElement.clientHeight;
   //define the pod object
@@ -8,7 +7,7 @@ $(document).ready(function () {
     //initialize pod speed and position
     init: function () {
       this.podPosition = 0;
-      this.podSpeed = Math.floor(100 * vwConvert);
+      this.podSpeed = Math.floor(30 * vwConvert); //50 pixels to vw
       this.pod = $("#pod");
       this.podWidth = Math.floor(parseInt(this.pod.css('width')) * vwConvert);
       this.podBorder = Math.floor(parseInt(this.pod.css('border-right')) * vwConvert);
@@ -45,10 +44,9 @@ $(document).ready(function () {
       this.pod.css('left', this.podPosition + 'vw');
     }
   };
-  //generic falling object the argument x will contain the style to be applied trooper powerup etc.
+  //Generic constructor to create new falling objects in the game.
   var FallingObject = function (x) {
     this.type = x;
-    //2 objects could be created at the same time so time is not dependable add a random number
     this.id = Date.now() + Math.floor(Math.random() * 10000) + 1000;
     this.html = '<div class="base ' + this.type + '" id=' + this.id + '></div>';
     this.fallTimer = 10;
@@ -67,15 +65,18 @@ $(document).ready(function () {
       this.powerCreateSpeed = 20000;
       this.dangerCreateSpeed = 15000;
       this.superCreateSpeed = 40000;
+      this.speedCreateSpeed = 30000;
       this.negativePointsFactor = 4;
       this.superPowerUpFactor = 2;
       this.powerupFactor = 1.3;
       this.dangerFactor = 0.7;
       this.fallSpeedFactor = 2;
+      this.podSpeedFactor = 1.2;
       this.trooperInit();
       this.powerUpInit();
       this.dangerInit();
       this.superPowerInit();
+      this.speedPowerInit();
       this.scoreDiv = $("#points");
       this.score = 0;
       pod.init();
@@ -86,8 +87,8 @@ $(document).ready(function () {
 
       function createTrooper() {
         trooper = new FallingObject("trooper");
-        game.startFall(trooper);
-      };
+        game.handleFall(trooper);
+      }
     },
     //create powerup items
     powerUpInit: function () {
@@ -95,7 +96,7 @@ $(document).ready(function () {
 
       function createPower() {
         power = new FallingObject("powerup");
-        game.startFall(power);
+        game.handleFall(power);
       }
     },
     //create danger items
@@ -104,7 +105,7 @@ $(document).ready(function () {
 
       function createDanger() {
         danger = new FallingObject("danger");
-        game.startFall(danger);
+        game.handleFall(danger);
       }
     },
     //create superpower items
@@ -113,17 +114,25 @@ $(document).ready(function () {
 
       function createSuperPower() {
         superPower = new FallingObject("super");
-        game.startFall(superPower);
+        game.handleFall(superPower);
       }
     },
-    //being fall of created items
-    startFall: function (elem) {
+    speedPowerInit: function () {
+      this.speedInitInterval = setInterval(createSpeedPower, this.speedCreateSpeed);
+
+      function createSpeedPower() {
+        speedPower = new FallingObject("speed");
+        game.handleFall(speedPower);
+      }
+    },
+    //handle fall of created items
+    handleFall: function (elem) {
       var _this = this;
       elem.FallInterval = setInterval(fall, elem.fallTimer);
 
       function fall() {
         var top = Math.floor(parseInt($("#" + elem.id).css('top'))) * vhConvert;
-        top += (elem.fallSpeed) / _this.fallSpeedFactor;
+        top += (elem.fallSpeed)/2;
         if (top >= 78 && top <= 80 && elem.pos + 7 >= pod.getPodPosition() && elem.pos <= pod.getPodPosition() + pod.podWidth) {
           clearInterval(elem.FallInterval);
           _this.handleCollission(elem);
@@ -134,45 +143,53 @@ $(document).ready(function () {
         }
       }
     },
-    //need to sepearte the collission function
+    //handle for what happens on collission for different items
     handleCollission: function (e) {
       clearInterval(e.FallInterval);
+      //add class alive which removes the background and updates score
       if (e.type === "trooper") {
         $("#" + e.id).addClass("alive");
         this.updateScore(e);
       }
+      //increase the podWidth
       if (e.type === "powerup") {
         pod.setPodWidth(this.powerupFactor);
       }
+      //decrease the podWidth
+      if (e.type === "speed") {
+        pod.podSpeed *= this.podSpeedFactor;
+      }
+      //increase podspeed
       if (e.type === "danger") {
         pod.setPodWidth(this.dangerFactor);
       }
-      if (e.type === "super"){
-        pod.setPodWidth(this.powerupFactor+0.7);
 
-        $('.danger').each(function(){
+      //double the podWidth for 10 and remove all danger items
+      if (e.type === "super") {
+        pod.setPodWidth(this.powerupFactor + 0.7);
+        $('.danger').each(function () {
           $(this).remove();
         });
-
-        setTimeout(function(){
+        setTimeout(function () {
           game.dangerInit();
           pod.setPodWidth(0.5);
-        },10000);
+        }, 10000);
       }
       this.removeObject(e);
     },
+    //handle for what happens when the item is dead, i.e reaches the base without collission
     handleDead: function (e) {
       clearInterval(e.FallInterval);
       if ($("#" + e.id).hasClass('trooper')) {
         $("#" + e.id).addClass("dead");
+        this.updateScore(e, true);
       }
-      this.updateScore(e, true);
       this.removeObject(e);
     },
+    //function to remove the objects
     removeObject: function (e) {
       setTimeout(function () {
         $("#" + e.id).remove();
-        delete e;
       }, 1000);
     },
     updateScore: function (e, dead) {

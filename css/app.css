@@ -5,6 +5,8 @@ body{
   margin: 0;
 }
 
+/*Animated cloud copied from */
+/*thecodeplayer.com/walkthrough/pure-css3-animated-clouds-background*/
 
 #clouds{
   padding: 100px 0;
@@ -167,7 +169,7 @@ body{
   position: absolute;
   top: 0;
   left: 0;
-  transition: top 0.1s ease;
+  transition: top 0.1s linear;
 }
 
 .trooper {
@@ -217,6 +219,20 @@ body{
 
 .danger::after {
     content: "Danger";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: black;
+    font-size: 0.5em;
+}
+
+.speed {
+  background: url('../assets/speed.svg');
+  background-size: cover;
+}
+
+.speed::after {
+    content: "Speed";
     position: absolute;
     bottom: 0;
     right: 0;
