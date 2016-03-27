@@ -191,10 +191,10 @@ body{
 }
 
 .powerup::after {
-    content: "Power";
+    content: "Grow";
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: 1vh;
     color: black;
     font-size: 0.5em;
 }
@@ -204,10 +204,10 @@ body{
 }
 
 .super::after {
-    content: "Super";
+    content: "Power";
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: 1vh;
     color: black;
     font-size: 0.5em;
 }
@@ -218,10 +218,10 @@ body{
 }
 
 .danger::after {
-    content: "Danger";
+    content: "Shrink";
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: 1vh;
     color: black;
     font-size: 0.5em;
 }
@@ -235,7 +235,7 @@ body{
     content: "Speed";
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: 1vh;
     color: black;
     font-size: 0.5em;
 }
