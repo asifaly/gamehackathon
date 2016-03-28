@@ -169,7 +169,7 @@ $(document).ready(function () {
         setTimeout(function () {
           var power = new FallingObject("powerup");
           power.handleFall();
-          window.requestAnimationFrame(createTrooper);
+          window.requestAnimationFrame(createPower);
         }, _this.powerCreateSpeed);
       }
     },
@@ -207,7 +207,7 @@ $(document).ready(function () {
         setTimeout(function () {
           var speedPower = new FallingObject("speed");
           speedPower.handleFall();
-          window.requestAnimationFrame(createSpeedPowerr);
+          window.requestAnimationFrame(createSpeedPower);
         }, _this.speedCreateSpeed);
       }
     },
