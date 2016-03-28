@@ -13,20 +13,17 @@ $(document).ready(function () {
       this.pod = $("#pod");
       this.podWidth = Math.floor(parseInt(this.pod.css('width')) * vwConvert);
       this.podBorder = Math.floor(parseInt(this.pod.css('border-right')) * vwConvert);
-      console.log(this.podSpeed);
     },
     //move pod to the right
     moveRight: function () {
       var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert)+1;
       this.podPosition = pos + this.podSpeed;
-      console.log(pos, this.podPosition, this.podSpeed);
       this.updatePodPosition();
     },
     //move pod to the left
     moveLeft: function () {
       var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert)-1;
       this.podPosition = pos - this.podSpeed;
-      console.log(pos, this.podPosition, this.podSpeed);
       this.updatePodPosition();
     },
     //return current podposition i.e left of the pod
@@ -43,11 +40,9 @@ $(document).ready(function () {
       console.log("update" + this.podPosition);
       if (this.podPosition < 0) {
         this.podPosition = 0;
-        console.log("if1");
       }
       if (this.podPosition + this.podWidth > 100) {
         this.podPosition = 100 - this.podWidth - this.podBorder * 2;
-        console.log("if2");
       }
       this.pod.css('left', this.podPosition + 'vw');
     }
