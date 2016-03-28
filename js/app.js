@@ -1,5 +1,4 @@
 /*globals $:false */
-
 $(document).ready(function () {
   //jquery reports width/left etc in pixels, this if a factor to convert it to vh and vw
   var vwConvert = 100 / document.documentElement.clientWidth;
@@ -60,6 +59,72 @@ $(document).ready(function () {
     $("#" + this.id).css('left', this.pos + 'vw');
     $("#" + this.id).attr('data-content', this.points);
   };
+
+  FallingObject.prototype.handleFall = function () {
+    var _this = this;
+    this.FallInterval = setInterval(fall, this.fallTimer);
+
+    function fall() {
+      var top = Math.floor(parseInt($("#" + _this.id).css('top'))) * vhConvert;
+      top += (_this.fallSpeed) / 2;
+      if (top >= 78 && top <= 80 && _this.pos + 7 >= pod.getPodPosition() && _this.pos <= pod.getPodPosition() + pod.podWidth) {
+        clearInterval(_this.FallInterval);
+        _this.handleCollission();
+      } else if (top < 90) {
+        $("#" + _this.id).css('top', top + 'vh');
+      } else {
+        _this.handleDead();
+      }
+    }
+  };
+
+  FallingObject.prototype.handleCollission = function () {
+    clearInterval(this.FallInterval);
+    //add class alive which removes the background and updates score
+    if (this.type === "trooper") {
+      $("#" + this.id).addClass("alive");
+      game.updateScore(this);
+    }
+    //increase the podWidth
+    if (this.type === "powerup") {
+      pod.setPodWidth(game.powerupFactor);
+    }
+    //decrease the podWidth
+    if (this.type === "speed") {
+      pod.podSpeed *= game.podSpeedFactor;
+    }
+    //increase podspeed
+    if (this.type === "danger") {
+      pod.setPodWidth(game.dangerFactor);
+    }
+    //double the podWidth for 10 and remove all danger items
+    if (this.type === "super") {
+      pod.setPodWidth(game.powerupFactor + 0.7);
+      $('.danger').each(function () {
+        $(this).remove();
+      });
+      setTimeout(function () {
+        game.dangerInit();
+        pod.setPodWidth(0.5);
+      }, 10000);
+    }
+    this.removeObject();
+  };
+  FallingObject.prototype.handleDead = function () {
+    clearInterval(this.FallInterval);
+    if ($("#" + this.id).hasClass('trooper')) {
+      $("#" + this.id).addClass("dead");
+      game.updateScore(this, true);
+    }
+    this.removeObject();
+  };
+  //function to remove the objects
+  FallingObject.prototype.removeObject = function () {
+    var elem = this;
+    setTimeout(function () {
+      $("#" + elem.id).remove();
+    }, 1000);
+  };
   //game object to control the game play
   var game = {
     //initialize the game by initializing pod and troopercreate speed and being trooper creation
@@ -90,7 +155,7 @@ $(document).ready(function () {
 
       function createTrooper() {
         var trooper = new FallingObject("trooper");
-        game.handleFall(trooper);
+        trooper.handleFall();
       }
     },
     //create powerup items
@@ -99,7 +164,7 @@ $(document).ready(function () {
 
       function createPower() {
         var power = new FallingObject("powerup");
-        game.handleFall(power);
+        power.handleFall();
       }
     },
     //create danger items
@@ -108,7 +173,7 @@ $(document).ready(function () {
 
       function createDanger() {
         var danger = new FallingObject("danger");
-        game.handleFall(danger);
+        danger.handleFall();
       }
     },
     //create superpower items
@@ -117,7 +182,7 @@ $(document).ready(function () {
 
       function createSuperPower() {
         var superPower = new FallingObject("super");
-        game.handleFall(superPower);
+        superPower.handleFall();
       }
     },
     speedPowerInit: function () {
@@ -125,75 +190,8 @@ $(document).ready(function () {
 
       function createSpeedPower() {
         var speedPower = new FallingObject("speed");
-        game.handleFall(speedPower);
+        speedPower.handleFall();
       }
-    },
-    //handle fall of created items
-    handleFall: function (elem) {
-      var _this = this;
-      elem.FallInterval = setInterval(fall, elem.fallTimer);
-
-      function fall() {
-        var top = Math.floor(parseInt($("#" + elem.id).css('top'))) * vhConvert;
-        top += (elem.fallSpeed)/2;
-        if (top >= 78 && top <= 80 && elem.pos + 7 >= pod.getPodPosition() && elem.pos <= pod.getPodPosition() + pod.podWidth) {
-          clearInterval(elem.FallInterval);
-          _this.handleCollission(elem);
-        } else if (top < 90) {
-          $("#" + elem.id).css('top', top + 'vh');
-        } else {
-          _this.handleDead(elem);
-        }
-      }
-    },
-    //handle for what happens on collission for different items
-    handleCollission: function (e) {
-      clearInterval(e.FallInterval);
-      //add class alive which removes the background and updates score
-      if (e.type === "trooper") {
-        $("#" + e.id).addClass("alive");
-        this.updateScore(e);
-      }
-      //increase the podWidth
-      if (e.type === "powerup") {
-        pod.setPodWidth(this.powerupFactor);
-      }
-      //decrease the podWidth
-      if (e.type === "speed") {
-        pod.podSpeed *= this.podSpeedFactor;
-      }
-      //increase podspeed
-      if (e.type === "danger") {
-        pod.setPodWidth(this.dangerFactor);
-      }
-
-      //double the podWidth for 10 and remove all danger items
-      if (e.type === "super") {
-        pod.setPodWidth(this.powerupFactor + 0.7);
-        $('.danger').each(function () {
-          $(this).remove();
-        });
-        setTimeout(function () {
-          game.dangerInit();
-          pod.setPodWidth(0.5);
-        }, 10000);
-      }
-      this.removeObject(e);
-    },
-    //handle for what happens when the item is dead, i.e reaches the base without collission
-    handleDead: function (e) {
-      clearInterval(e.FallInterval);
-      if ($("#" + e.id).hasClass('trooper')) {
-        $("#" + e.id).addClass("dead");
-        this.updateScore(e, true);
-      }
-      this.removeObject(e);
-    },
-    //function to remove the objects
-    removeObject: function (e) {
-      setTimeout(function () {
-        $("#" + e.id).remove();
-      }, 1000);
     },
     updateScore: function (e, dead) {
       var score = (dead ? Math.floor(e.points / this.negativePointsFactor) : e.points);
