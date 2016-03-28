@@ -8,20 +8,20 @@ $(document).ready(function () {
     //initialize pod speed and position
     init: function () {
       this.podPosition = 0;
-      this.podSpeed = Math.floor(30 * vwConvert); //50 pixels to vw
+      this.podSpeed = Math.floor(50 * vwConvert); //50 pixels to vw
       this.pod = $("#pod");
       this.podWidth = Math.floor(parseInt(this.pod.css('width')) * vwConvert);
       this.podBorder = Math.floor(parseInt(this.pod.css('border-right')) * vwConvert);
     },
     //move pod to the right
     moveRight: function () {
-      var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert);
+      var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert)+1;
       this.podPosition = pos + this.podSpeed;
       this.updatePodPosition();
     },
     //move pod to the left
     moveLeft: function () {
-      var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert);
+      var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert)-1;
       this.podPosition = pos - this.podSpeed;
       this.updatePodPosition();
     },
