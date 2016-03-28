@@ -15,13 +15,13 @@ $(document).ready(function () {
     },
     //move pod to the right
     moveRight: function () {
-      var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert)+1;
+      var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert) + 1;
       this.podPosition = pos + this.podSpeed;
       this.updatePodPosition();
     },
     //move pod to the left
     moveLeft: function () {
-      var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert)-1;
+      var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert) - 1;
       this.podPosition = pos - this.podSpeed;
       this.updatePodPosition();
     },
@@ -59,27 +59,25 @@ $(document).ready(function () {
     $("#" + this.id).css('left', this.pos + 'vw');
     $("#" + this.id).attr('data-content', this.points);
   };
-
   FallingObject.prototype.handleFall = function () {
     var _this = this;
-    this.FallInterval = setInterval(fall, this.fallTimer);
+    this.FallInterval = window.requestAnimationFrame(fall);
 
     function fall() {
       var top = Math.floor(parseInt($("#" + _this.id).css('top'))) * vhConvert;
       top += (_this.fallSpeed) / 2;
       if (top >= 78 && top <= 80 && _this.pos + 7 >= pod.getPodPosition() && _this.pos <= pod.getPodPosition() + pod.podWidth) {
-        clearInterval(_this.FallInterval);
         _this.handleCollission();
       } else if (top < 90) {
         $("#" + _this.id).css('top', top + 'vh');
+        window.requestAnimationFrame(fall);
       } else {
         _this.handleDead();
       }
     }
   };
-
   FallingObject.prototype.handleCollission = function () {
-    clearInterval(this.FallInterval);
+    window.cancelAnimationFrame(this.FallInterval);
     //add class alive which removes the background and updates score
     if (this.type === "trooper") {
       $("#" + this.id).addClass("alive");
@@ -111,7 +109,7 @@ $(document).ready(function () {
     this.removeObject();
   };
   FallingObject.prototype.handleDead = function () {
-    clearInterval(this.FallInterval);
+    window.cancelAnimationFrame(this.FallInterval);
     if ($("#" + this.id).hasClass('trooper')) {
       $("#" + this.id).addClass("dead");
       game.updateScore(this, true);
@@ -151,46 +149,66 @@ $(document).ready(function () {
     },
     //create troopers
     trooperInit: function () {
-      this.trooperInitInterval = setInterval(createTrooper, this.trooperCreateSpeed);
+      var _this = this;
+      this.trooperInitInterval = window.requestAnimationFrame(createTrooper);
 
       function createTrooper() {
-        var trooper = new FallingObject("trooper");
-        trooper.handleFall();
+        setTimeout(function () {
+          var trooper = new FallingObject("trooper");
+          trooper.handleFall();
+          window.requestAnimationFrame(createTrooper);
+        }, _this.trooperCreateSpeed);
       }
     },
     //create powerup items
     powerUpInit: function () {
-      this.powerInitInterval = setInterval(createPower, this.powerCreateSpeed);
+      var _this = this;
+      this.powerInitInterval = window.requestAnimationFrame(createPower);
 
       function createPower() {
-        var power = new FallingObject("powerup");
-        power.handleFall();
+        setTimeout(function () {
+          var power = new FallingObject("powerup");
+          power.handleFall();
+          window.requestAnimationFrame(createTrooper);
+        }, _this.powerCreateSpeed);
       }
     },
     //create danger items
     dangerInit: function () {
-      this.dangerInitInterval = setInterval(createDanger, this.dangerCreateSpeed);
+      var _this = this;
+      this.dangerInitInterval = window.requestAnimationFrame(createDanger);
 
       function createDanger() {
-        var danger = new FallingObject("danger");
-        danger.handleFall();
+        setTimeout(function () {
+          var danger = new FallingObject("danger");
+          danger.handleFall();
+          window.requestAnimationFrame(createDanger);
+        }, _this.dangerCreateSpeed);
       }
     },
     //create superpower items
     superPowerInit: function () {
-      this.superInitInterval = setInterval(createSuperPower, this.superCreateSpeed);
+      var _this = this;
+      this.superInitInterval = window.requestAnimationFrame(createSuperPower);
 
       function createSuperPower() {
-        var superPower = new FallingObject("super");
-        superPower.handleFall();
+        setTimeout(function () {
+          var superPower = new FallingObject("super");
+          superPower.handleFall();
+          window.requestAnimationFrame(createSuperPower);
+        }, _this.superCreateSpeed);
       }
     },
     speedPowerInit: function () {
-      this.speedInitInterval = setInterval(createSpeedPower, this.speedCreateSpeed);
+      var _this = this;
+      this.speedInitInterval = window.requestAnimationFrame(createSpeedPower);
 
       function createSpeedPower() {
-        var speedPower = new FallingObject("speed");
-        speedPower.handleFall();
+        setTimeout(function () {
+          var speedPower = new FallingObject("speed");
+          speedPower.handleFall();
+          window.requestAnimationFrame(createSpeedPowerr);
+        }, _this.speedCreateSpeed);
       }
     },
     updateScore: function (e, dead) {
