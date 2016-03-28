@@ -202,7 +202,7 @@ $(document).ready(function () {
     }
   };
   $(document).keydown(function (e) {
-    switch (e.which) {
+    switch (e.which || e.keycode) {
     case 37: // left
       pod.moveLeft();
       break;
