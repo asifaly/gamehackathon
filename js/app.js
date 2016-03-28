@@ -9,21 +9,24 @@ $(document).ready(function () {
     //initialize pod speed and position
     init: function () {
       this.podPosition = 0;
-      this.podSpeed = Math.floor(30 * vwConvert); //50 pixels to vw
+      this.podSpeed = Math.floor(50 * vwConvert); //50 pixels to vw
       this.pod = $("#pod");
       this.podWidth = Math.floor(parseInt(this.pod.css('width')) * vwConvert);
       this.podBorder = Math.floor(parseInt(this.pod.css('border-right')) * vwConvert);
+      console.log(this.podSpeed);
     },
     //move pod to the right
     moveRight: function () {
-      var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert);
+      var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert)+1;
       this.podPosition = pos + this.podSpeed;
+      console.log(pos, this.podPosition, this.podSpeed);
       this.updatePodPosition();
     },
     //move pod to the left
     moveLeft: function () {
-      var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert);
+      var pos = Math.floor(parseInt(this.pod.css('left')) * vwConvert)-1;
       this.podPosition = pos - this.podSpeed;
+      console.log(pos, this.podPosition, this.podSpeed);
       this.updatePodPosition();
     },
     //return current podposition i.e left of the pod
@@ -37,11 +40,14 @@ $(document).ready(function () {
     },
     //called on keypress to control the pod from moving out of the border.
     updatePodPosition: function () {
+      console.log("update" + this.podPosition);
       if (this.podPosition < 0) {
         this.podPosition = 0;
+        console.log("if1");
       }
       if (this.podPosition + this.podWidth > 100) {
         this.podPosition = 100 - this.podWidth - this.podBorder * 2;
+        console.log("if2");
       }
       this.pod.css('left', this.podPosition + 'vw');
     }
